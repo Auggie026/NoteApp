@@ -14,9 +14,8 @@ import java.util.*
 
 class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
-    private var binding: NoteLayoutAdapterBinding? = null
 
-    class NoteViewHolder(itemBinding: NoteLayoutAdapterBinding):
+    class NoteViewHolder(val itemBinding: NoteLayoutAdapterBinding):
         RecyclerView.ViewHolder(itemBinding.root)
 
 
@@ -34,21 +33,18 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
     val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        binding = NoteLayoutAdapterBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+        return NoteViewHolder(
+            NoteLayoutAdapterBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
-
-        return NoteViewHolder(binding!!)
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val currentNote = differ.currentList[position]
 
-        holder.itemView.apply {
-            binding?.tvNoteTitle?.text = currentNote.nateTitle
-            binding?.tvNoteBody?.text = currentNote.noteBody
+        holder.itemBinding.tvNoteTitle.text = currentNote.nateTitle
+        holder.itemBinding.tvNoteBody.text = currentNote.noteBody
 
             val random = Random()
             val color = Color.argb(255,
@@ -57,16 +53,13 @@ class NoteAdapter: RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
                 random.nextInt(256)
                 )
 
-            binding?.viewColor?.setBackgroundColor(color)
-
-        }.setOnClickListener { mView ->
+            holder.itemBinding.viewColor.setBackgroundColor(color)
+            holder.itemView.setOnClickListener { mView ->
 
             val direction = HomeFragmentDirections
                 .actionHomeFragmentToUpdateNoteFragment(currentNote)
 
-            mView.findNavController().navigate(
-              direction
-            )
+            mView.findNavController().navigate(direction)
         }
     }
 

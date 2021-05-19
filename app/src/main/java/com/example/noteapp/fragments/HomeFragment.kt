@@ -122,7 +122,7 @@ SearchView.OnQueryTextListener{
     }
 
     private fun searchNotes(query: String?){
-        val searchQuery = "%$query"
+        val searchQuery = "%$query%"
         noteViewModel.searchNote(searchQuery).observe(this, {list ->
             noteAdapter.differ.submitList(list)
         })
