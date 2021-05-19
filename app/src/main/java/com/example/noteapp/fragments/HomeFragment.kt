@@ -44,8 +44,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpRecyclerView()
+
         noteViewModel = (activity as MainActivity).noteViewModel
+        setUpRecyclerView()
 
         binding.fabAddNote.setOnClickListener{ mView ->
 
